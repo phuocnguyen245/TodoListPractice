@@ -1,0 +1,6 @@
+export interface ITodo {
+  id: string;
+  title: string;
+  status: string;
+  createdDay: string;
+}
