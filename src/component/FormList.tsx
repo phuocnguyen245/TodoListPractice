@@ -53,11 +53,6 @@ const FormList = ({ data, handleDelete, handleChangeStatus }: IProps) => {
       },
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
       title: 'Created Date',
       dataIndex: 'createdDay',
       key: 'createdDay',

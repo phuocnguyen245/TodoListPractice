@@ -5,24 +5,25 @@ import './App.css';
 import FormAdd from './component/FormAdd';
 import FormList from './component/FormList';
 import { ITodo } from './data-models';
+const today = new Date();
 const initData = [
   {
     id: uuidv4(),
     title: 'Cooking meal',
-    status: 'inprogress',
-    createdDay: '12/4/2022',
+    status: 'completed',
+    createdDay: today.getDate() - 1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
   },
   {
     id: uuidv4(),
     title: 'Wash the dishes',
     status: 'inprogress',
-    createdDay: '13/4/2022',
+    createdDay: today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
   },
   {
     id: uuidv4(),
     title: 'Clean the floor',
-    status: 'completed',
-    createdDay: '20/4/2022',
+    status: 'notStart',
+    createdDay:  today.getDate()+1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
   },
 ];
 
@@ -32,7 +33,7 @@ function App() {
   const clearAllData = useCallback(() => {
     return setData([]);
   }, []);
-  
+
   const handleChangeStatus = (value: string, id: string) => {
     const findAndUpdate = data.map((item: ITodo) => {
       if (item.id === id) {
@@ -51,8 +52,8 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="container">
+    <div className='App'>
+      <div className='container'>
         <FormAdd clearAllData={clearAllData} setData={setData} />
         <FormList data={data} handleDelete={handleDelete} handleChangeStatus={handleChangeStatus} />
       </div>
