@@ -1,20 +1,23 @@
 import { Button, Select, Table } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ITodo } from '../data-models';
 import { RootState } from '../redux/store';
+import { changeStatus, deleteTodo } from '../redux/todoSlice';
 
-const FormList = ({ data, handleDelete, handleChangeStatus }: { data: ITodo[]; handleDelete: any; handleChangeStatus: any }) => {
+const FormList = () => {
+  const dispatch = useDispatch();
   const { Option } = Select;
 
-  const getId = (id: string) => {
-    handleDelete(id);
+  const dataInRedux = useSelector((state: RootState) => state.todo.data);
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteTodo(id));
   };
 
-  function handleChange(e: any, record: ITodo) {
-    const { id } = record;
-    handleChangeStatus(e.value, id);
-  }
-  const dataInRedux = useSelector((state: RootState) => state.todo.data);
+  const handleChangeStatus = (e: any, record: ITodo) => {
+    dispatch(changeStatus({ status: e.value, id: record.id }));
+  };
+
   const columns = [
     {
       title: 'Index',
@@ -35,7 +38,7 @@ const FormList = ({ data, handleDelete, handleChangeStatus }: { data: ITodo[]; h
         let color = '';
         status === 'completed' ? (color = 'green') : status === 'notStart' ? (color = 'gray') : (color = 'blue');
         return (
-          <Select labelInValue defaultValue={{ value: status }} style={{ color }} onChange={(e) => handleChange(e, record)}>
+          <Select labelInValue defaultValue={{ value: status }} style={{ color }} onChange={(e) => handleChangeStatus(e, record)}>
             <Option value='notStart'>Not Start</Option>
             <Option value='inprogress'>Inprogress</Option>
             <Option value='completed'>Completed</Option>
@@ -58,13 +61,13 @@ const FormList = ({ data, handleDelete, handleChangeStatus }: { data: ITodo[]; h
       key: 'action',
       dataIndex: 'id',
       render: (id: string, record: ITodo, index: number) => {
-        return <Button onClick={() => getId(id)}>Delete</Button>;
+        return <Button onClick={() => handleDelete(id)}>Delete</Button>;
       },
     },
   ];
   return (
     <div className='table-form'>
-      <Table dataSource={dataInRedux} columns={columns} pagination={false} />
+      <Table dataSource={dataInRedux} columns={columns} pagination={false} rowKey='id' />
     </div>
   );
 };
