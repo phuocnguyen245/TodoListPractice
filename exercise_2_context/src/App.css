@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+  height: 100%;
+}
+
+.container{
+  width: 70%;
+  margin: 100px auto;
+}
+
+.table {
+  width: 100%;
+  margin: 0 auto;
+}
