@@ -1,14 +1,40 @@
 import { Button, Select, Table } from 'antd';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITodo } from '../data-models';
 import { RootState } from '../redux/store';
 import { changeStatus, deleteTodo } from '../redux/todoSlice';
 
+const today = new Date();
 const FormList = () => {
   const dispatch = useDispatch();
-  const { Option } = Select;
-
   const dataInRedux = useSelector((state: RootState) => state.todo.data);
+  const { title } = useSelector((state: RootState) => state.todo);
+
+  const { Option } = Select;
+  const [data, setData] = useState<ITodo[]>();
+
+  useEffect(() => {
+    if (title === 'today') {
+      const filter = dataInRedux.filter((d: ITodo) => {
+        return d.createdDay === today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setData(filter);
+    } else if (title === 'nextDay') {
+      const filter = dataInRedux.filter((d: ITodo) => {
+        return d.createdDay > today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setData(filter);
+    }else if(title === 'lastDay'){
+       const filter = dataInRedux.filter((d: ITodo) => {
+         return d.createdDay < today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+       });
+       setData(filter);
+    }else{
+      setData(dataInRedux)
+    }
+  }, [title, dataInRedux]);
+  
 
   const handleDelete = (id: string) => {
     dispatch(deleteTodo(id));
@@ -67,7 +93,7 @@ const FormList = () => {
   ];
   return (
     <div className='table-form'>
-      <Table dataSource={dataInRedux} columns={columns} pagination={false} rowKey='id' />
+      <Table dataSource={data} columns={columns} pagination={false} rowKey='id' />
     </div>
   );
 };

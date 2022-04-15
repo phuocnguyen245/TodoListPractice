@@ -3,6 +3,8 @@ import { ITodo } from '../data-models';
 import { v4 as uuidv4 } from 'uuid';
 export interface TodoState {
   data: ITodo[];
+  isClick: boolean;
+  title: string
 }
 
 const today = new Date();
@@ -30,6 +32,8 @@ const initData = [
 
 const initialState: TodoState = {
   data: initData,
+  title: '',
+  isClick: false,
 };
 
 export const todoSlice = createSlice({
@@ -58,9 +62,12 @@ export const todoSlice = createSlice({
       });
       state.data = findAndUpdate;
     },
+    filterTodo: (state, action) => {
+      state.title = action.payload
+    }
   },
 });
 
-export const { addTodo, clearAllTodo, deleteTodo, changeStatus } = todoSlice.actions;
+export const { addTodo, clearAllTodo, deleteTodo, changeStatus, filterTodo } = todoSlice.actions;
 
 export default todoSlice.reducer;
