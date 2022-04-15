@@ -25,16 +25,15 @@ const FormList = () => {
         return d.createdDay > today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
       });
       setData(filter);
-    }else if(title === 'lastDay'){
-       const filter = dataInRedux.filter((d: ITodo) => {
-         return d.createdDay < today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-       });
-       setData(filter);
-    }else{
-      setData(dataInRedux)
+    } else if (title === 'lastDay') {
+      const filter = dataInRedux.filter((d: ITodo) => {
+        return d.createdDay < today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setData(filter);
+    } else {
+      setData(dataInRedux);
     }
   }, [title, dataInRedux]);
-  
 
   const handleDelete = (id: string) => {
     dispatch(deleteTodo(id));
