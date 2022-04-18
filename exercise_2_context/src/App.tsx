@@ -1,21 +1,48 @@
-import React, { useContext } from 'react';
+import 'antd/dist/antd.css';
+import React, { createContext, useEffect, useState } from 'react';
 import './App.css';
 import ButtonList from './container/ButtonList';
 import FormAdd from './container/FormAdd';
 import FormList from './container/FormList';
-import Context from './store/Context';
+import { v4 as uuidv4 } from 'uuid';
+import { ITodo } from './data-models';
+
+export const DataContext = createContext({});
+const today = new Date();
+const initData: ITodo[] = [
+  {
+    id: uuidv4(),
+    title: 'Cooking meal',
+    status: 'completed',
+    createdDay: today.getDate() - 1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
+  },
+  {
+    id: uuidv4(),
+    title: 'Wash the dishes',
+    status: 'inprogress',
+    createdDay: today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
+  },
+  {
+    id: uuidv4(),
+    title: 'Clean the floor',
+    status: 'notStart',
+    createdDay: today.getDate() + 1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
+  },
+];
 
 function App() {
-  const store: any = useContext(Context);
-  const { data } = store[0];
-  const dispatch = store[1];
+  const [data, setData] = useState<ITodo[]>(initData);
+
+  const [title, setTitle] = useState<string>('');
 
   return (
-    <div className='App'>
-      <FormAdd dispatch={dispatch} />
-      <ButtonList />
-      <FormList dataInStore={data} dispatch={dispatch} />
-    </div>
+    <DataContext.Provider value={{ data, setData, title, setTitle }}>
+      <div className='App'>
+        <FormAdd />
+        <ButtonList />
+        <FormList />
+      </div>
+    </DataContext.Provider>
   );
 }
 

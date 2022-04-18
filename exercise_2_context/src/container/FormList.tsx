@@ -1,25 +1,51 @@
 import { Button, Select, Table } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { DataContext } from '../App';
 import { ITodo } from '../data-models';
-import { deleteTodo } from '../store/action';
 
-const FormList = ({ dataInStore, dispatch }: { dataInStore: any; dispatch: any }) => {
+const today = new Date();
+
+const FormList = () => {
   const { Option } = Select;
+  const { data, setData, title: btnTitle }: ITodo[] | string | any = useContext(DataContext);
 
-  const [data, setData] = useState<ITodo[]>();
-
-  console.log(dataInStore);
+  const [dataSource, setDataSource] = useState<ITodo[]>(data);
 
   useEffect(() => {
-    setData(dataInStore);
-  }, [dataInStore]);
+    let filter: ITodo[] = [];
+    if (btnTitle === 'today') {
+      filter = data.filter((d: ITodo) => {
+        return d.createdDay === today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setDataSource(filter);
+    } else if (btnTitle === 'nextDay') {
+      filter = data.filter((d: ITodo) => {
+        return d.createdDay > today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setDataSource(filter);
+    } else if (btnTitle === 'lastDay') {
+      filter = data.filter((d: ITodo) => {
+        return d.createdDay < today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      });
+      setDataSource(filter);
+    } else {
+      setDataSource(data);
+    }
+  }, [btnTitle, data]);
 
   const handleDelete = (id: string) => {
-    dispatch(deleteTodo(id));
+    const newData = data.filter((d: ITodo) => d.id !== id);
+    setData(newData);
   };
 
   const handleChangeStatus = (e: any, record: ITodo) => {
-    // dispatch(changeStatus({ status: e.value, id: record.id }));
+    const updateStatus = data.map((d: ITodo) => {
+      if (d.id === record.id) {
+        return { ...d, status: e.value };
+      }
+      return { ...d };
+    });
+    setData(updateStatus);
   };
 
   const columns = [
@@ -69,10 +95,9 @@ const FormList = ({ dataInStore, dispatch }: { dataInStore: any; dispatch: any }
       },
     },
   ];
-
   return (
     <div className='table-form'>
-      <Table dataSource={data} columns={columns} pagination={false} rowKey='id' />
+      <Table dataSource={dataSource} columns={columns} pagination={false} rowKey='id' />
     </div>
   );
 };
