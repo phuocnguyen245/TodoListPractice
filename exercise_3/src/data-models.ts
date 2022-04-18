@@ -6,13 +6,13 @@ export interface ITodo {
 }
 
 export interface IUser {
-  user_Id?: number;
-  todoList?: ITodo[];
+  user_Id: number;
+  todoList: ITodo[];
 }
 
 export interface IContext {
-  data?: IUser;
-  todoList?:IUser[];
+  data?: IUser[];
+  todoList?: IUser[];
   setData?: any;
   handleFilter?: (id: number, title: string) => void;
   btnDetail?: {
@@ -20,8 +20,8 @@ export interface IContext {
     title: string;
   };
   handleAdd?: (id: number, title: string) => void;
-  handleChangeStatus?: (status: string, id: string, user_Id: string) => void;
-  handleDelete?: (id: string, user_Id: number | string) => void;
   handleClear?: (user_Id: number) => void;
+  handleChangeStatus?: (status: string, id: string, user_Id: number) => void;
+  handleDelete?: (id: string, user_Id: number) => void;
 }
 

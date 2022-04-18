@@ -5,13 +5,14 @@ import { IContext, ITodo, IUser } from '../data-models';
 
 const FormList = ({ user_Id, todoList }: IUser) => {
   const { Option } = Select;
-  const { handleChangeStatus, handleDelete }: IContext = useContext(DataContext);
+  const { handleChangeStatus, handleDelete }: any = useContext(DataContext);
 
-  const onChangeStatus = (e: any, record: any, user_Id: any) => {
+  const onChangeStatus = (e: any, record: ITodo, user_Id: number) => {
     handleChangeStatus(e.value, record.id, user_Id);
   };
 
-  const onDelete = (id: string, user_Id: number | string) => {
+  const onDelete = (id: string, user_Id: number) => {
+    console.log(id, user_Id);
     handleDelete(id, user_Id);
   };
 

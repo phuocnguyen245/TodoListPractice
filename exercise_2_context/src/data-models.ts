@@ -4,3 +4,10 @@ export interface ITodo {
   status: string;
   createdDay: string;
 }
+export interface IContext {
+  data?: ITodo[];
+  setData?: any;
+  title?: string;
+  setTitle?: any;
+  dataSource?: any;
+}

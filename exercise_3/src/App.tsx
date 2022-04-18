@@ -1,9 +1,6 @@
 import 'antd/dist/antd.css';
 import React, { createContext, useEffect, useState } from 'react';
 import './App.css';
-import ButtonList from './container/ButtonList';
-import FormAdd from './container/FormAdd';
-import FormList from './container/FormList';
 import { v4 as uuidv4 } from 'uuid';
 import { ITodo } from './data-models';
 import TodoList from './container/TodoList';
@@ -88,7 +85,7 @@ function App() {
     setData(addTodo);
   };
 
-  const handleChangeStatus = (status: string, id: string, user_Id: string) => {
+  const handleChangeStatus = (status: string, id: string, user_Id: number) => {
     const updateStatus = data.map((d: any) => {
       if (d.user_Id === user_Id) {
         d.todoList.map((l: any) => {
@@ -103,7 +100,7 @@ function App() {
     setData(updateStatus);
   };
 
-  const handleDelete = (id: string, user_Id: number | string) => {
+  const handleDelete = (id: string, user_Id: number) => {
     const deleteData = data.map((d: any) => {
       if (d.user_Id === user_Id) {
         const restData = d.todoList.filter((l: any) => {

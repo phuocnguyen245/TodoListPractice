@@ -1,30 +1,29 @@
 import { Button, Select, Table } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { DataContext } from '../App';
-import { ITodo } from '../data-models';
+import { IContext, ITodo } from '../data-models';
 
 const today = new Date();
 
 const FormList = () => {
   const { Option } = Select;
-  const { data, setData, title: btnTitle }: ITodo[] | string | any = useContext(DataContext);
+  const { data, setData, title: btnTitle }: IContext = useContext(DataContext);
 
-  const [dataSource, setDataSource] = useState<ITodo[]>(data);
+  const [dataSource, setDataSource] = useState(data);
 
   useEffect(() => {
-    let filter: ITodo[] = [];
     if (btnTitle === 'today') {
-      filter = data.filter((d: ITodo) => {
-        return d.createdDay === today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+      const filter = data?.filter((d: ITodo) => {
+        return d?.createdDay === today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
       });
       setDataSource(filter);
     } else if (btnTitle === 'nextDay') {
-      filter = data.filter((d: ITodo) => {
+      const filter = data?.filter((d: ITodo) => {
         return d.createdDay > today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
       });
       setDataSource(filter);
     } else if (btnTitle === 'lastDay') {
-      filter = data.filter((d: ITodo) => {
+      const filter = data?.filter((d: ITodo) => {
         return d.createdDay < today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
       });
       setDataSource(filter);
@@ -34,12 +33,12 @@ const FormList = () => {
   }, [btnTitle, data]);
 
   const handleDelete = (id: string) => {
-    const newData = data.filter((d: ITodo) => d.id !== id);
+    const newData = data?.filter((d: ITodo) => d.id !== id);
     setData(newData);
   };
 
   const handleChangeStatus = (e: any, record: ITodo) => {
-    const updateStatus = data.map((d: ITodo) => {
+    const updateStatus = data?.map((d: ITodo) => {
       if (d.id === record.id) {
         return { ...d, status: e.value };
       }
