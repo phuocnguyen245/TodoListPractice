@@ -5,10 +5,11 @@ import { ITodo } from '../data-models';
 
 interface IProps {
   clearAllData: () => void;
-  setData: (data: any) => void;
+  onSetData: (data: any) => void;
 }
-const FormAdd = ({ clearAllData, setData }: IProps) => {
-  const [title, setTitle] = useState('');
+
+const FormAdd = ({ clearAllData, onSetData }: IProps) => {
+  const [title, setTitle] = useState<string>('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -22,7 +23,7 @@ const FormAdd = ({ clearAllData, setData }: IProps) => {
       status: 'notStart',
       createdDay: date,
     };
-    setData((prev: ITodo[]) => [...prev, newTitle]);
+    onSetData((prev: ITodo[]) => [...prev, newTitle]);
     setTitle('');
   };
 

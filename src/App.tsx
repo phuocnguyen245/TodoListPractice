@@ -23,12 +23,12 @@ const initData = [
     id: uuidv4(),
     title: 'Clean the floor',
     status: 'notStart',
-    createdDay:  today.getDate()+1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
+    createdDay: today.getDate() + 1 + '/' + (today.getMonth() + 1) + '/' + today.getFullYear(),
   },
 ];
 
 function App() {
-  const [data, setData] = useState(initData);
+  const [data, setData] = useState<ITodo[]>(initData);
 
   const clearAllData = useCallback(() => {
     return setData([]);
@@ -54,7 +54,7 @@ function App() {
   return (
     <div className='App'>
       <div className='container'>
-        <FormAdd clearAllData={clearAllData} setData={setData} />
+        <FormAdd clearAllData={clearAllData} onSetData={setData} />
         <FormList data={data} handleDelete={handleDelete} handleChangeStatus={handleChangeStatus} />
       </div>
     </div>

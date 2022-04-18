@@ -1,11 +1,7 @@
 import { Button, Select, Table } from 'antd';
 import { ITodo } from '../data-models';
-interface IProps {
-  data: ITodo[];
-  handleDelete: (value: string) => void;
-  handleChangeStatus: (value: string, id: string) => void;
-}
-const FormList = ({ data, handleDelete, handleChangeStatus }: IProps) => {
+
+const FormList = ({ data, handleDelete, handleChangeStatus }: any) => {
   const { Option } = Select;
 
   const getId = (id: string) => {
@@ -37,20 +33,18 @@ const FormList = ({ data, handleDelete, handleChangeStatus }: IProps) => {
         let color = '';
         status === 'completed' ? (color = 'green') : status === 'notStart' ? (color = 'gray') : (color = 'blue');
         return (
-          <Select
-            labelInValue
-            defaultValue={{
-              value: status,
-            }}
-            style={{ color }}
-            onChange={(e) => handleChange(e, record)}
-          >
+          <Select labelInValue defaultValue={{ value: status }} style={{ color }} onChange={(e) => handleChange(e, record)}>
             <Option value='notStart'>Not Start</Option>
             <Option value='inprogress'>Inprogress</Option>
             <Option value='completed'>Completed</Option>
           </Select>
         );
       },
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
     },
     {
       title: 'Created Date',
