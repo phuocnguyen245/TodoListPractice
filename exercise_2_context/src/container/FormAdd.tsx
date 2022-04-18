@@ -1,10 +1,11 @@
 import { Button, Input, Space } from 'antd';
 import React, { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { addTodo } from '../store/action';
-import Context from '../store/Context';
+import { DataContext } from '../App';
+import { ITodo } from '../data-models';
 
-const FormAdd = ({ dispatch }: { dispatch: any }) => {
+const FormAdd = () => {
+  const { data, setData }: IContext = useContext(DataContext);
   const [title, setTitle] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,29 +15,28 @@ const FormAdd = ({ dispatch }: { dispatch: any }) => {
   const handleAdd = () => {
     const today = new Date();
     const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-    const newTitle = {
+    const newTitle: ITodo = {
       id: uuidv4(),
       title,
       status: 'notStart',
       createdDay: date,
     };
-    dispatch(addTodo(newTitle));
+    const newData: ITodo[]= [...data, newTitle];
+    setData(newData);
     setTitle('');
   };
 
   const handleClearAllData = () => {
-    // dispatch(clearAllTodo());
+    setData([])
   };
 
   return (
     <>
-      {/* {!isClick && ( */}
       <Space align='baseline' style={{ width: '100%' }}>
         <Input status='warning' placeholder='Enter Job' type='text' value={title} onChange={(e) => handleChange(e)} />
         <Button onClick={() => handleAdd()}>Add</Button>
         <Button onClick={handleClearAllData}>Clear All</Button>
       </Space>
-      {/* )} */}
     </>
   );
 };
